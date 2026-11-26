@@ -1,4 +1,5 @@
 import streamlit as st
+from models import gemini
 
 st.set_page_config(
     page_title='Gemini API Project',
@@ -21,8 +22,10 @@ prompt = st.text_area('Enter your Prompt',
 button_clicked = st.button('Send Prompt :airplane:')
 
 if button_clicked:
-    st.toast(':red[Button Clicked.]', duration=10)
-    st.write(f'button clicked. {prompt} typed.')
-    st.success('Success Message')
-    st.warning('Warning Message')
-    st.error('Error Message')
+    if prompt.strip() == '':
+        st.warning('Prompt field cannot be empty.')
+    else:
+        with st.spinner('Generating Content...'):
+            answer = gemini(prompt)
+            st.success('Content Generated.')
+            st.write(answer)
